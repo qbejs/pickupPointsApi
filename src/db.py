@@ -1,18 +1,42 @@
+import json
 from typing import AsyncGenerator
 
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
+from sqlalchemy import Column, JSON
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# TO DO: Change to containerd db
 DATABASE_URL = "sqlite+aiosqlite:///./test.db"
 Base: DeclarativeMeta = declarative_base()
+encoder = json.JSONEncoder()
+decoder = json.JSONDecoder()
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
-    pass
+    roles = Column(JSON, nullable=True, default=encoder.encode(['ROLE_USER']))
+
+    def get_roles(self) -> list:
+        return decoder.decode(self.roles)
+
+    def set_role(self, role: str) -> list:
+        roles = self.get_roles()
+        roles.append(role)
+        self.roles = encoder.encode(roles)
+        return roles
+
+    def remove_role(self, role: str) -> list:
+        roles = self.get_roles()
+        roles.remove(role)
+        self.roles = encoder.encode(roles)
+        return roles
+
+    def has_role(self, role: str) -> bool:
+        roles = self.get_roles()
+        if role not in roles:
+            return False
+        return True
 
 
 engine = create_async_engine(DATABASE_URL)

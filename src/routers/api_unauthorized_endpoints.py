@@ -1,19 +1,17 @@
-import json
 import uuid
 from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException
+
 from src.models.core import HealthcheckResponse
-from src.models.dto.get_point_search_dto import GetSearchParamsDTO
-from src.models.dto.patch_point_dto import PatchPointDTO
-from src.models.point import PointModel
-from src.services.elastic import ESManager
-from src.services.point import PointService
-from src.services.geocode import GeocodeService
-from src.models.dto.post_add_point_dto import PostAddPointDTO
 from src.models.dto.get_geocode_nominatim_dto import GetGeocodeNominatimDTO
+from src.models.dto.get_point_search_dto import GetSearchParamsDTO
+from src.models.point import PointModel
 from src.models.responses.geocode_response import GeocodeResponse
+from src.services.elastic import ESManager
+from src.services.geocode import GeocodeService
 from src.services.log import logger as log_service
-from src.services.importers.xml_importer import XmlImporter
+from src.services.point import PointService
 
 logger = log_service()
 

@@ -13,7 +13,7 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 
 from src.db import User, get_user_db
 
-SECRET = os.getenv('JWT_SECRET')
+SECRET: str = os.getenv('JWT_SECRET').__str__()
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
@@ -22,6 +22,9 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has registered.")
+
+    async def on_after_login(self, user: User, request: Optional[Request] = None):
+        print(f"User {user.id} logged in.")
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None
