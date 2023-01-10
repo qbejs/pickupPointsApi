@@ -1,0 +1,50 @@
+{
+  "settings": {
+    "number_of_shards": 3,
+    "analysis": {
+      "filter": {
+        "shingle": {
+          "type": "shingle",
+          "min_shingle_size": 2,
+          "max_shingle_size": 3
+        },
+        "autocomplete_filter": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 6
+        }
+      }
+    }
+  },
+  "mappings": {
+    "_source": {
+      "enabled": true
+    },
+    "properties": {
+      "name": {
+        "type": "text"
+      },
+      "code": {
+        "type": "text"
+      },
+      "country": {
+        "type": "text"
+      },
+      "voivodeship": {
+        "type": "text"
+      },
+      "province": {
+        "type": "text"
+      },
+      "street": {
+        "type": "text"
+      },
+      "buildingNumber": {
+        "type": "text"
+      },
+      "location": {
+            "type": "geo_point"
+       }
+    }
+  }
+}
