@@ -1,10 +1,6 @@
-import asyncio
 import json
-import string
-import os
-from typing import Coroutine
+
 from dotenv import load_dotenv
-from elasticsearch import AsyncElasticsearch
 from fastapi import HTTPException
 
 from src.models.dto.get_point_search_dto import GetSearchParamsDTO
@@ -34,20 +30,20 @@ class PointService:
 
         return newPoint
 
-    async def update_point(self, point: str, point_data: PatchPointDTO):
+    async def update_point(self, point: str, point_data: PatchPointDTO) -> PointModel:
         data = PointModel.parse_raw(point_data.json())
-        resp = await self.__dataSource.update(payload=data)
+        resp = await self.__dataSource.update(payload=data, resource_id=point)
 
         return resp
 
-    async def delete_point(self, point_id: str):
+    async def delete_point(self, point_id: str) -> PointModel:
         encoder = json.JSONEncoder()
         resp = await self.__dataSource.findOne(element_id=point_id)
         delete = await self.__dataSource.delete(payload=PointModel.parse_raw(encoder.encode(resp["hits"]["hits"][0]["_source"])))
 
         return delete
 
-    async def point_search(self, search_type: str, params: GetSearchParamsDTO):
+    async def point_search(self, search_type: str, params: GetSearchParamsDTO) -> json:
         if search_type == "address":
             pass
 
@@ -58,6 +54,3 @@ class PointService:
                 raise HTTPException(500, f'Range search error. Details: {e}')
 
         raise HTTPException(400, 'Not enough params or wrong search type')
-
-    async def import_from_xml(self):
-        pass
