@@ -8,8 +8,7 @@ from src.services.log import logger as log_service
 from src.services.point import PointService
 import xml.etree.ElementTree as ET
 import xmltodict
-
-logger = log_service()
+import logging as logger
 
 
 class XmlImporter(ImportInterface):

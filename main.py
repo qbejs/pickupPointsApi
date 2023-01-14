@@ -1,4 +1,10 @@
+import json
+import logging
+import os
+import sys
 from datetime import datetime
+from pathlib import Path
+
 from fastapi import FastAPI
 from src.db import create_db_and_tables
 from src.models.users import fastapi_users, auth_backend
@@ -6,7 +12,11 @@ from src.routers import api_unauthorized_endpoints, api_authorized_endpoints
 from fastapi.middleware.cors import CORSMiddleware
 from src.schemas import UserRead, UserCreate, UserUpdate
 
-app = FastAPI()
+from src.services.log import CustomizeLogger
+
+logger = logging.getLogger(__name__)
+config_path = Path(__file__).with_name("log_config.json")
+app = FastAPI(logger=CustomizeLogger.make_logger(config_path=config_path))
 
 # Middleware
 origins = ["*"]

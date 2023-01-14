@@ -10,10 +10,8 @@ from src.models.point import PointModel
 from src.models.responses.geocode_response import GeocodeResponse
 from src.services.elastic import ESManager
 from src.services.geocode import GeocodeService
-from src.services.log import logger as log_service
 from src.services.point import PointService
-
-logger = log_service()
+import logging as logger
 
 router = APIRouter(
     prefix="/api",

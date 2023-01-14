@@ -10,10 +10,9 @@ from src.models.point import PointModel
 from src.models.users import current_active_user
 from src.services.elastic import ESManager
 from src.services.importers.xml_importer import XmlImporter
-from src.services.log import logger as log_service
+import logging as logger
 from src.services.point import PointService
 
-logger = log_service()
 
 router = APIRouter(
     prefix="/api",

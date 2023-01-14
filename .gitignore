@@ -1,6 +1,7 @@
 # Env
 .env
 venv
+log_config.json
 
 # sqlite
 test.db

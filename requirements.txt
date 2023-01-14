@@ -9,3 +9,4 @@ aiosqlite
 SQLAlchemy~=1.4.46
 pydantic~=1.10.4
 python-dotenv~=0.21.0
+loguru
