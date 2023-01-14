@@ -1,5 +1,6 @@
 import logging
 import sys
+import uuid
 from pathlib import Path
 from loguru import logger
 import json
@@ -26,7 +27,7 @@ class InterceptHandler(logging.Handler):
             frame = frame.f_back
             depth += 1
 
-        log = logger.bind(request_id='app')
+        log = logger.bind(request_id=uuid.uuid4())
         log.opt(
             depth=depth,
             exception=record.exc_info
