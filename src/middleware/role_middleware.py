@@ -16,5 +16,5 @@ class RoleCheck:
             print(f"Access granted to user: {user.id}")
             return True
 
-        return HTTPException(403, 'Forbidden')
+        raise HTTPException(403, 'Forbidden')
 
