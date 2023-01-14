@@ -38,6 +38,17 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
             return False
         return True
 
+    def get_info(self) -> dict:
+        return {
+            "id": self.id,
+            "username": self.email,
+            "is_active": self.is_active,
+            "is_verified": self.is_verified,
+            "is_superuser": self.is_superuser,
+            "roles": self.get_roles()
+        }
+
+
 
 engine = create_async_engine(DATABASE_URL)
 async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
