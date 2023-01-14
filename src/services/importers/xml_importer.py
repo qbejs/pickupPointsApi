@@ -27,7 +27,7 @@ class XmlImporter(ImportInterface):
     def set_input(self, input_data: str):
         self.input = input_data
 
-    async def parse(self):
+    async def parse(self) -> list:
         failed = False
         if await self.validate_data() is False:
             raise Exception("Failed to validate given data.")
@@ -46,7 +46,7 @@ class XmlImporter(ImportInterface):
         else:
             raise Exception("Found errors. See logs for details.")
 
-    async def import_data(self):
+    async def import_data(self) -> None:
         if len(self.collection) == 0:
             raise Exception("Empty collection. Firstly parse data.")
 
@@ -70,7 +70,7 @@ class XmlImporter(ImportInterface):
             logger.error(f"Import error. Problem with parsing input data. Details {e}")
             return False
 
-    async def __parse_to_dict(self):
+    async def __parse_to_dict(self) -> list:
         try:
             return xmltodict.parse(self.input)["collection"]["point"]
         except Exception as e:
