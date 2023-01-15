@@ -52,7 +52,11 @@ class CustomizeLogger:
     ):
         logger.remove()
         logger.add(
-            sys.stdout, enqueue=True, backtrace=True, level=level.upper(), format=log_format
+            sys.stdout,
+            enqueue=True,
+            backtrace=True,
+            level=level.upper(),
+            format=log_format,
         )
         logger.add(
             str(filepath),
@@ -74,6 +78,6 @@ class CustomizeLogger:
     @classmethod
     def load_logging_config(cls, config_path):
         config = None
-        with open(config_path, encoding='utf-8') as config_file:
+        with open(config_path, encoding="utf-8") as config_file:
             config = json.load(config_file)
         return config

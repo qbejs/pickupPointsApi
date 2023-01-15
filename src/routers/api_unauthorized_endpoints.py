@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 import logging as logger
+from typing import List
 
 from aiohttp import ClientError as NominatimRequestError
 from elastic_transport import ApiError, TransportError
@@ -48,9 +49,7 @@ async def geocode_point(
         return await service.geocode(payload=payload, reverse=False)
     except (ValueError, NominatimRequestError) as e:
         logger.error(
-            "Problem with geocoding. Payload: %s | Error details: %s",
-            payload.json(),
-            e
+            "Problem with geocoding. Payload: %s | Error details: %s", payload.json(), e
         )
         return {"lat": 0.0, "lon": 0.0}
 
@@ -65,8 +64,7 @@ async def get_point(point: str, service: ESManager = Depends(ESManager)):
 
         if len(resp["hits"]["hits"]) > 1:
             logger.error(
-                "More than one record found for given point id. Point ID: %s",
-                point
+                "More than one record found for given point id. Point ID: %s", point
             )
             raise HTTPException(
                 409, "Cannot process given point. Contact with support."
@@ -74,11 +72,13 @@ async def get_point(point: str, service: ESManager = Depends(ESManager)):
 
         return resp["hits"]["hits"][0]["_source"]
     except (ValueError, ApiError, TransportError) as e:
-        logger.error("Cannot get point data. Point ID: %s | Error details: %s", point, e)
+        logger.error(
+            "Cannot get point data. Point ID: %s | Error details: %s", point, e
+        )
         raise HTTPException(500, "Cannot get point data. Contact with support.")
 
 
-@router.get("/point", response_model=list[PointModel])
+@router.get("/point", response_model=List[PointModel])
 async def get_points(service: ESManager = Depends(ESManager)):
     try:
         collection = []
@@ -92,7 +92,7 @@ async def get_points(service: ESManager = Depends(ESManager)):
         logger.error("Cannot get point collection. Details: %s", e)
 
 
-@router.get("/point/search/{search_type}", response_model=list[PointModel])
+@router.get("/point/search/{search_type}", response_model=List[PointModel])
 async def point_search(
     search_type: str,
     params: GetSearchParamsRequest,
@@ -111,7 +111,7 @@ async def point_search(
             "Problem with search engine. Search type: %s | Payload: %s} | Error details: %s",
             search_type,
             params.json(),
-            e
+            e,
         )
 
         if e.args[0] == 400 or e.args[0] == 404:

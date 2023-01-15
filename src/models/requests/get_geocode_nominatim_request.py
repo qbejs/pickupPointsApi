@@ -13,8 +13,10 @@ class GetGeocodeNominatimRequest(BaseModel):
     addressCountry: str = "Poland"
 
     def __str__(self):
-        return f"{self.addressCountry}," \
-               f"{self.addressVoivodeship}" \
-               f",{self.addressProvince}," \
-               f"{self.addressCity}," \
-               f"{self.addressStreet} {self.addressBuildingNumber}"
+        return (
+            f"{self.addressCountry},"
+            f"{self.addressVoivodeship}"
+            f",{self.addressProvince},"
+            f"{self.addressCity},"
+            f"{self.addressStreet} {self.addressBuildingNumber}"
+        )

@@ -93,6 +93,8 @@ class ESManager(DatabaseInterface):
         return await self.es.search(index="points", query={"match_all": {}})
 
     def generate_connection_url(self) -> string:
-        return f"{'https://' if os.getenv('ES_SSL') == 'True' else 'http://'}" \
-               f"{os.getenv('ES_USER')}:{os.getenv('ES_PASS')}" \
-               f"@{os.getenv('ES_HOST')}:{os.getenv('ES_PORT')}"
+        return (
+            f"{'https://' if os.getenv('ES_SSL') == 'True' else 'http://'}"
+            f"{os.getenv('ES_USER')}:{os.getenv('ES_PASS')}"
+            f"@{os.getenv('ES_HOST')}:{os.getenv('ES_PORT')}"
+        )
