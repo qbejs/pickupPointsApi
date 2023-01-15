@@ -29,5 +29,5 @@ class DatabaseInterface:
     async def findAll(self) -> json:
         pass
 
-    def __generate_connection_url(self) -> string:
+    def generate_connection_url(self) -> string:
         pass
