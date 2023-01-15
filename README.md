@@ -1,4 +1,4 @@
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
 
 # Parcel Pickup Point Search API
 Simple fastapi app to search and manage packages/mail drop points. Database agnostic, in current implementation using elasticsearch as data source.
