@@ -19,7 +19,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install black
         pip install pylint
+        pip install pylint-exit
     - name: Lint
       run: |
-        pylint $(git ls-files '*.py') --min-public-methods=0 --extension-pkg-whitelist='pydantic' --disable=C0114,C0115,C0116,E0401,R0801,W0707,W0613,C0103
+        pylint $(git ls-files '*.py') --min-public-methods=0 --extension-pkg-whitelist='pydantic' --disable=C0114,C0115,C0116,E0401,R0801,W0707,W0613,C0103 || || pylint-exit $?
+        if [ $? -ne 0 ]; then
+          echo "An error occurred while running pylint." >&2
+          exit 1
+        fi
 
