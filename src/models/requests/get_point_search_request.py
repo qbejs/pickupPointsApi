@@ -1,10 +1,8 @@
-from datetime import datetime
-from uuid import UUID
+from typing import Union
 from pydantic import BaseModel
-from typing import Dict, Union
 
 
-class GetSearchParamsDTO(BaseModel):
+class GetSearchParamsRequest(BaseModel):
     lat: Union[float, None] = None
     lon: Union[float, None] = None
     distance: int = None

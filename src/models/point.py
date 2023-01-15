@@ -1,8 +1,9 @@
 import uuid
 from datetime import datetime
+from typing import Union
 from uuid import UUID
+
 from pydantic import BaseModel
-from typing import Dict, Union
 
 
 class PointModel(BaseModel):
@@ -23,16 +24,16 @@ class PointModel(BaseModel):
     def is_deleted(self) -> bool:
         if self.deleted_at is None:
             return False
-        else:
-            return True
+
+        return True
 
     def set_location(self, lat: float, lon: float) -> object:
-        self.location = {
-            "lat": lat,
-            "lon": lon
-        }
+        self.location = {"lat": lat, "lon": lon}
 
         return self
 
     def __str__(self):
-        return f"{self.country},{self.voivodeship},{self.province},{self.city},{self.street} {self.buildingNumber}"
+        return (
+            f"{self.country},{self.voivodeship},{self.province},"
+            f"{self.city},{self.street} {self.buildingNumber}"
+        )

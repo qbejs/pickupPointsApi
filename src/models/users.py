@@ -13,7 +13,7 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 
 from src.db import User, get_user_db
 
-SECRET: str = os.getenv('JWT_SECRET').__str__()
+SECRET: str = str(os.getenv("JWT_SECRET"))
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):

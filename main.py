@@ -1,17 +1,14 @@
-import json
 import logging
-import os
-import sys
 from datetime import datetime
 from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from src.db import create_db_and_tables
 from src.models.users import fastapi_users, auth_backend
 from src.routers import api_unauthorized_endpoints, api_authorized_endpoints
-from fastapi.middleware.cors import CORSMiddleware
 from src.schemas import UserRead, UserCreate, UserUpdate
-
 from src.services.log import CustomizeLogger
 
 logger = logging.getLogger(__name__)

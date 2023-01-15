@@ -1,10 +1,13 @@
 from datetime import datetime
 from uuid import UUID
+from typing import Optional
 from pydantic import BaseModel
-from typing import Dict, Union
 
 
-class PostAddPointDTO(BaseModel):
+class PatchPointRequest(BaseModel):
+    id: UUID
+    created_at: datetime
+    deleted: Optional[bool]
     name: str
     code: str
     city: str

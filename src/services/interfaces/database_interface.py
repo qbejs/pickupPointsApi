@@ -1,16 +1,14 @@
 import json
 import string
-from typing import Union
 
-from src.models.dto.get_geocode_nominatim_dto import GetGeocodeNominatimDTO
 from src.models.point import PointModel
 
 
 class DatabaseInterface:
-    async def getConnectionStatus(self) -> bool:
+    async def get_connection_status(self) -> bool:
         pass
 
-    async def getConnectionDetails(self) -> json:
+    async def get_connection_details(self) -> json:
         pass
 
     async def add(self, payload: object) -> PointModel:
@@ -31,5 +29,5 @@ class DatabaseInterface:
     async def findAll(self) -> json:
         pass
 
-    def __generateConnectionUrl(self) -> string:
+    def __generate_connection_url(self) -> string:
         pass

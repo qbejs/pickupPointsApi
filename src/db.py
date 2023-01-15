@@ -15,7 +15,9 @@ decoder = json.JSONDecoder()
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
-    roles = Column(JSON, nullable=True, default=encoder.encode(['ROLE_USER']))
+    """User model"""
+
+    roles = Column(JSON, nullable=True, default=encoder.encode(["ROLE_USER"]))
 
     def get_roles(self) -> list:
         return decoder.decode(self.roles)
@@ -45,9 +47,8 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
             "is_active": self.is_active,
             "is_verified": self.is_verified,
             "is_superuser": self.is_superuser,
-            "roles": self.get_roles()
+            "roles": self.get_roles(),
         }
-
 
 
 engine = create_async_engine(DATABASE_URL)

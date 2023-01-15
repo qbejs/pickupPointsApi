@@ -1,5 +1,5 @@
-from fastapi import HTTPException, Depends
 import logging as logger
+from fastapi import HTTPException, Depends
 from src.db import User
 from src.models.users import current_active_user
 
@@ -15,11 +15,13 @@ class RoleCheck:
     def __call__(self, user: User = Depends(current_active_user)):
         if user.has_role(self.role):
             self.access_granted = True
-            logger.info({
-                "user": user.get_info(),
-                "requested_role": self.role,
-                "role_validation": self.access_granted
-            })
+            logger.info(
+                {
+                    "user": user.get_info(),
+                    "requested_role": self.role,
+                    "role_validation": self.access_granted,
+                }
+            )
             return self
 
-        raise HTTPException(403, 'Forbidden')
+        raise HTTPException(403, "Forbidden")
