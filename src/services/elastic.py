@@ -27,17 +27,24 @@ class ESManager(DatabaseInterface):
                 500, f"Cannot initialize connection with elasticsearch. Details: {e}"
             )
 
-    async def getConnectionStatus(self):
-        return await self.es.ping(pretty=True, human=True)
+    async def getConnectionStatus(self) -> bool:
+        resp: bool = await self.es.ping(pretty=True, human=True)
+        await self.es.close()
 
-    async def getConnectionDetails(self):
-        return await self.es.info(pretty=True, human=True)
+        return resp
+
+    async def getConnectionDetails(self) -> json:
+        resp: json = await self.es.info(pretty=True, human=True)
+        await self.es.close()
+
+        return resp
 
     async def add(self, payload: object) -> PointModel:
         if isinstance(payload, PointModel):
             await self.es.create(
                 index="points", id=str(payload.id), document=payload.json()
             )
+            await self.es.close()
             return payload
 
         raise HTTPException(400, "Unsupported payload")
@@ -50,6 +57,7 @@ class ESManager(DatabaseInterface):
             payload.set_location(lat=geocode["lat"], lon=geocode["lon"])
             payload.updated_at = datetime.now()
             await self.es.update(index="points", id=str(payload.id), doc=payload.dict())
+            await self.es.close()
             return payload
 
         raise HTTPException(400, "Unsupported payload")
@@ -59,22 +67,26 @@ class ESManager(DatabaseInterface):
             payload.updated_at = datetime.now()
             payload.deleted_at = datetime.now()
             await self.es.update(index="points", id=str(payload.id), doc=payload.dict())
+            await self.es.close()
             return payload
 
         raise HTTPException(400, "Unsupported payload")
 
     async def findOne(self, element_id: str) -> json:
-        return await self.es.search(
+        resp: json = await self.es.search(
             index="points", query={"query": {"match": {"id": element_id}}}
         )
+        await self.es.close()
+
+        return resp
 
     async def findBy(self, payload: object) -> json:
         """
         TO DO
         """
 
-    async def rangeSearch(self, lat: float, lon: float, search_range: int = 10):
-        return await self.es.search(
+    async def rangeSearch(self, lat: float, lon: float, search_range: int = 10) -> json:
+        resp: json = await self.es.search(
             index="points",
             query={
                 "bool": {
@@ -88,9 +100,15 @@ class ESManager(DatabaseInterface):
                 }
             },
         )
+        await self.es.close()
+
+        return resp
 
     async def findAll(self) -> json:
-        return await self.es.search(index="points", query={"match_all": {}})
+        resp: json = await self.es.search(index="points", query={"match_all": {}})
+        await self.es.close()
+
+        return resp
 
     def generate_connection_url(self) -> string:
         return (

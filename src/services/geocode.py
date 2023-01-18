@@ -43,4 +43,6 @@ class GeocodeService(GeocoderInterface):
             async with session.get(
                 os.getenv("NOMINATIM_URL"), params={"q": data, "format": resp_format}
             ) as resp:
+                await session.close()
                 return await resp.json()
+
